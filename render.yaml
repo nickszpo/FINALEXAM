@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: laravel-app
+    env: php
+    buildCommand: "composer install --no-dev && php artisan key:generate && npm install && npm run build"
+    startCommand: "php artisan serve --host=0.0.0.0 --port=\$PORT"
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_URL
+        fromHost: true
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: DB_DATABASE
+        value: /opt/render/project/storage/database.sqlite
+    disk:
+      name: storage
+      mountPath: /opt/render/project/storage
+      sizeGB: 1
+    autoDeploy: true
